@@ -1,17 +1,73 @@
 import React, {Component} from "react";
-class AddBook extends Component{
-    render() {
-        return(
-            <form style={{ maxWidth:'800px',margin:'auto'}}>
-                <div className="form-group row">
-                    <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm">Book Name</label>
-                    <div className="col-sm-10">
-                        <input type="email" className="form-control form-control-sm" placeholder="Book Name" />
-                    </div>
-                </div>
+import INPUT from "./InputUI";
 
-            </form>
-        );
+class AddBook extends Component {
+
+    state = {
+        AddForm: {
+            image: {
+                value: '',
+                type:''
+            },
+            name: {
+                value: '',
+                type:''
+            },
+            author: {
+                value: '',
+                type:''
+            },
+            price: {
+                value: '',
+                type:''
+            },
+            description: {
+                value: '',
+                type:''
+            },
+        }
     }
+
+    inputChangeHandler = (event, whom) => {
+        const updateForm = {
+            ...this.state.AddForm
+        };
+        const updateFormElement = {
+            ...updateForm[whom]
+        };
+        updateFormElement.value = event.target.value;
+        updateForm[whom] = updateFormElement;
+        this.setState({
+            AddForm: updateForm
+        });
+    }
+
+    saveNewBook =()=>{
+        console.log(this.state.AddForm);
+    }
+
+
+render()
+{
+    return (
+        <form style={{maxWidth: '800px', margin: 'auto', padding: '20px'}} className='border'>
+
+            <INPUT intype='file' named='Book Image' v={this.state.AddForm.name.value}
+                   changed={(event) => this.inputChangeHandler(event, 'image')}/>
+            <INPUT intype='input' v={this.state.AddForm.name.value} named='Book Name'
+                   changed={(event) => this.inputChangeHandler(event, 'name')}/>
+            <INPUT intype='input' v={this.state.AddForm.author.value} named='Book Author'
+                   changed={(event) => this.inputChangeHandler(event, 'author')}/>
+            <INPUT intype='input' v={this.state.AddForm.price.value} named='Book Price'
+                   changed={(event) => this.inputChangeHandler(event, 'price')}/>
+            <INPUT intype='area' v={this.state.AddForm.description.value} named='Book Description'
+                   changed={(event) => this.inputChangeHandler(event, 'description')}/>
+
+            <button className='btn btn-primary' onClick={this.saveNewBook}>Add</button>
+
+        </form>
+    );
 }
+}
+
 export default AddBook;
