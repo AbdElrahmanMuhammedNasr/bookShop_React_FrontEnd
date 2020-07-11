@@ -1,32 +1,62 @@
 import React, {Component} from "react";
+import axios from 'axios';
+
 
 class BookDetails extends Component {
-    render() {
+    state = {
+        book:null
+    }
+    componentDidMount() {
+        axios.get(`http://localhost:3100/get-book/${this.props.location.search.split("?")[1]}`,
+            {
+                headers: {'auth-token': `bearer ${localStorage.getItem('Token')}`}
+
+            })
+        .then( respone =>{
+            console.log(respone.data)
+            this.setState({
+                book : respone.data
+            })
+        })
+        .catch()
+    }
+
+render()
+{
+    if(this.state.book == null){
         return (
-            console.log(this.props.location.search.split('?')[1]),
+            <div  style={{margin:'40vh 50vw'}}>
+                <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>
+        );
+    }else{
+    return (
+        // console.log(this.props.location.search.split('?')[1]),
             <div>
                 <div className='row' style={{padding: '20px', backgroundColor: ''}}>
                     <section className='col'>
                         <img style={{
-                            width:'100%'
-                        }} src={this.props.location.search.split('?')[1]}/>
+                            width: '100%'
+                        }} src={this.state.book.image}/>
                     </section>
                     <section className='col' style={{backgroundColor: '', overflow: 'hidden',}}>
 
                         <div className="card">
                             <div className="card-header">
-                                The Hell of Red
+                                {this.state.book.name}
                             </div>
                             <div className="card-body">
                                 <blockquote className="blockquote mb-0">
                                     <section className='row'>
-                                        <p className='col text-muted'>By AbdElrahman Nasr (Author) </p>
-                                        <p className='col text-muted'>format: Kindle Edition </p>
+                                        <p className='col text-muted'>By {this.state.book.author}  </p>
+                                        <p className='col text-muted'>format: {this.state.book.format} </p>
                                     </section>
 
                                     <section className='row'>
-                                        <footer className="blockquote-footer col">Rating 5</footer>
-                                        <footer className="blockquote-footer col">450 ratings</footer>
+                                        <footer className="blockquote-footer col">Rating {this.state.book.rating}</footer>
+                                        <footer className="blockquote-footer col">{this.state.book.numOFRating} ratings</footer>
                                     </section>
 
                                 </blockquote>
@@ -38,11 +68,13 @@ class BookDetails extends Component {
                             <div className="card-body">
                                 <blockquote className="blockquote mb-0">
                                     <p className='col text-muted'>Type: Police </p>
-                                    <p className='col text-muted'>Price: 450 EGP </p>
+                                    <p className='col text-muted'>Price: {this.state.book.price} EGP </p>
                                     <p className='col text-muted'>Rent: 10 EGP Per Day </p>
                                     <footer className='row'>
-                                        <button className='btn btn-primary col' style={{margin:'20px'}}>Buy Book</button>
-                                        <button className='btn btn-secondary col' style={{margin:'20px'}}>Rent Book</button>
+                                        <button className='btn btn-primary col' style={{margin: '20px'}}>Buy Book
+                                        </button>
+                                        <button className='btn btn-secondary col' style={{margin: '20px'}}>Rent Book
+                                        </button>
                                     </footer>
                                 </blockquote>
                             </div>
@@ -62,25 +94,25 @@ class BookDetails extends Component {
                         <tbody>
                         <tr>
                             <td>Hardcover</td>
-                            <td>240 pages</td>
+                            <td>{this.state.book.additional.Hardcover} pages</td>
                         </tr>
                         <tr>
                             <td>Publisher</td>
-                            <td>Simon & Schuster</td>
+                            <td>{this.state.book.additional.Publisher}</td>
                         </tr>
                         <tr>
                             <td>Language</td>
-                            <td>English</td>
+                            <td>{this.state.book.additional.Language}</td>
                         </tr>
 
                         <tr>
                             <td>Product Dimensions</td>
-                            <td>6 x 9 inches</td>
+                            <td>{this.state.book.additional.Dimensions} inches</td>
                         </tr>
 
                         <tr>
-                            <td>Product Dimensions</td>
-                            <td>1.7 pounds</td>
+                            <td>Product weight</td>
+                            <td>{this.state.book.additional.weight} pounds</td>
                         </tr>
 
                         </tbody>
@@ -89,8 +121,10 @@ class BookDetails extends Component {
                 </div>
 
             </div>
-        );
-    }
+     
+    )
+};
+}
 }
 
 export default BookDetails;

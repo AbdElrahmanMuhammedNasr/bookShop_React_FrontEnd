@@ -8,7 +8,7 @@ class Navbar extends Component {
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark" style={{marginBottom: '5px'}}>
                 <div className="container-fluid ">
                     <NavLink to={{
-                        pathname: '/'
+                        pathname: '/home'
                     }}> <a className="navbar-brand">Book Shop</a>
                     </NavLink>
                     <div className="collapse navbar-collapse">

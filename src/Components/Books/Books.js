@@ -1,111 +1,58 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Book from "./Book/Book";
-class Books extends Component{
+import axios from 'axios';
 
-    state ={
-        Books:[
-            {
-                image:'https://cdn.pixabay.com/photo/2016/04/30/13/12/texture-1362879_960_720.jpg',
-                name:'Travel',
-                description:'sometimes by accident, sometimes on purpose (injected humour and the like',
-                author:'Darwin',
-                rating:2,
-            },
+class Books extends Component {
 
-            {
-                image:'https://cdn.pixabay.com/photo/2017/12/27/18/07/book-3043275_960_720.jpg',
-                name:'Go to hell',
-                description:'sometimes by accident, sometimes on purpose (injected humour and the like',
-                author:'Darwin',
-                rating:2,
-            },
-            {
-                image:'https://cdn.pixabay.com/photo/2018/07/01/20/01/book-3510326_960_720.jpg',
-                name:'Travel2',
-                description:'sometimes by accident, sometimes on purpose (injected humour and the like',
-                author:'Darwin',
-                rating:2,
-            },
-
-            {
-                image:'https://cdn.pixabay.com/photo/2016/09/10/17/18/book-1659717_960_720.jpg',
-                name:'Go to hell2',
-                description:'sometimes by accident, sometimes on purpose (injected humour and the like',
-                author:'Darwin',
-                rating:2,
-            },
-            {
-                image:'https://cdn.pixabay.com/photo/2016/10/14/16/39/book-1740515_960_720.png',
-                name:'Travel3',
-                description:'sometimes by accident, sometimes on purpose (injected humour and the like',
-                author:'Darwin',
-                rating:2,
-            },
-
-            {
-                image:'https://cdn.pixabay.com/photo/2016/10/14/16/39/book-1740515_960_720.png',
-                name:'Go to hell3',
-                description:'sometimes by accident, sometimes on purpose (injected humour and the like',
-                author:'Darwin',
-                rating:2,
-            },
-            {
-                image:'https://cdn.pixabay.com/photo/2016/04/30/13/12/texture-1362879_960_720.jpg',
-                name:'Travel',
-                description:'sometimes by accident, sometimes on purpose (injected humour and the like',
-                author:'Darwin',
-                rating:2,
-            },
-
-            {
-                image:'https://cdn.pixabay.com/photo/2017/12/27/18/07/book-3043275_960_720.jpg',
-                name:'Go to hell',
-                description:'sometimes by accident, sometimes on purpose (injected humour and the like',
-                author:'Darwin',
-                rating:2,
-            },
-            {
-                image:'https://cdn.pixabay.com/photo/2018/07/01/20/01/book-3510326_960_720.jpg',
-                name:'Travel2',
-                description:'sometimes by accident, sometimes on purpose (injected humour and the like',
-                author:'Darwin',
-                rating:2,
-            },
-
-            {
-                image:'https://cdn.pixabay.com/photo/2016/09/10/17/18/book-1659717_960_720.jpg',
-                name:'Go to hell2',
-                description:'sometimes by accident, sometimes on purpose (injected humour and the like',
-                author:'Darwin',
-                rating:2,
-            },
-            {
-                image:'https://cdn.pixabay.com/photo/2016/10/14/16/39/book-1740515_960_720.png',
-                name:'Travel3',
-                description:'sometimes by accident, sometimes on purpose (injected humour and the like',
-                author:'Darwin',
-                rating:2,
-            },
-
-
-
-        ]
-
+    state = {
+        Books: null
     }
 
-    render() {
-        return(
-            <div className="row">
-                {
-                this.state.Books.map(e=> {
-                  return(
-                        <Book className="col" key={e.name} data={e}/>
-                  );
-                })
+    componentDidMount() {
+        axios.get('http://localhost:3100/get-books',
+            {
+                headers: {'auth-token': `bearer ${localStorage.getItem('Token')}`}
+            }
+            )
+            .then((respone) => {
+                    // console.log(respone.data)
+                    this.setState({
+                        Books: respone.data
+                    });
                 }
-            </div>
+            ).catch(error => {
+                console.log('not allow')
+            }
         );
     }
 
+    render() {
+        if (this.state.Books === null || this.state.Books == undefined) {
+            return (
+                <div style={{margin: '40vh 50vw'}}>
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </div>
+            );
+
+        } else {
+            return (
+                <div className="row">
+                    {
+                        this.state.Books.map(e => {
+                            return (
+                                <Book className="col" key={e.name} data={e}/>
+                            );
+                        })
+                    }
+                </div>
+            );
+
+        }
+
+    }
+
 }
-export  default Books
+
+export default Books

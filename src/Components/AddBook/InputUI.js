@@ -11,6 +11,14 @@ const INPUT = (props) => {
                 value={props.v}
                 onChange={props.changed}/>;
             break;
+        case 'pass' :
+            inputElement = <input
+                type="password"
+                className="form-control form-control-sm"
+                placeholder={props.named}
+                value={props.v}
+                onChange={props.changed}/>;
+            break;
         case 'area' :
             inputElement = <textarea
                 style={{minHeight: '200px', maxHeight: '200px'}}

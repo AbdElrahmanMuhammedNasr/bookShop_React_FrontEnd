@@ -3,8 +3,9 @@ import Navbar from '../Components/NavBar/navbar'
 import Books from "../Components/Books/Books";
 import BookDetails from "../Components/BookDetailes/BookDetails";
 
-import {NavLink, Route, Switch} from "react-router-dom";
+import {NavLink, Redirect, Route, Switch} from "react-router-dom";
 import AddBook from "../Components/AddBook/AddBook";
+import Login from "../Components/Login/Login";
 
 class BookShop extends Component {
     render() {
@@ -13,16 +14,18 @@ class BookShop extends Component {
                 <Navbar/>
 
                 <Switch>
-                    <Route path='/' exact component={Books}/>
+                    {/*<Redirect from='/' to='login' />*/}
+                    <Route path='/home' exact component={Books}/>
+                    <Route path='/login' component={Login}/>
                     <Route path='/book-details' component={BookDetails}/>
-                    <Route path='/add-book' component={AddBook} />
+                    <Route path='/add-book/:bookName' component={AddBook} />
                 </Switch>
 
                 <div className="fixed-bottom">
                     <NavLink to={{
                         pathname: '/add-book'
                     }}>
-                        <a className="nav-link">Add</a>
+                        <button className='rounded btn btn-primary'>Add</button>
 
                     </NavLink>
                 </div>

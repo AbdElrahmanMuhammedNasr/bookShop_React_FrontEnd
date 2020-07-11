@@ -7,9 +7,9 @@ const Book = (props) => {
             <div className="row no-gutters">
                 <div className="col-md-4">
                     <NavLink to={{
-                        pathname: '/book-details',
-                        hash:'DETAILS',
-                        search:'?'+props.data.image
+                        pathname: '/book-details/'+props.data.name,
+                        // hash:'DETAILS',
+                        search:'?'+props.data.name
                     }}>
                         <img src={props.data.image} className="card-img"
                              style={{margin: '20px 10px', cursor: 'pointer'}}/>
